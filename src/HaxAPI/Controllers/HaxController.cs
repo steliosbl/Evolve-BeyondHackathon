@@ -191,5 +191,16 @@
 
             return NotFound();
         }
+
+        [HttpPost("lobbies/delete")]
+        public IActionResult DeleteLobby([FromBody] string id)
+        {
+            if (this.lobbyManager.DeleteLobby(id))
+            {
+                return Ok();
+            }
+
+            return NotFound();
+        }
     }
 }
