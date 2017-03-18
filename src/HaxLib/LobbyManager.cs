@@ -27,9 +27,9 @@
                     id = Guid.NewGuid().ToString();
                 }
 
-                this.lobbies.Add(id, new Lobby(id, Constants.LobbyManager.LobbyStateDefault, host.ID));
+                this.lobbies.Add(id, new Lobby(id, Constants.LobbyManager.LobbyStateDefault, host.ID, this.DeleteLobby));
                 this.JoinLobby(id, host.ID);
-                this.lobbies[id].BeginTimer(this.DeleteLobby);
+                this.lobbies[id].BeginExpirationTimer(Constants.LobbyManager.LobbyLifetime);
 
                 return id;
             }

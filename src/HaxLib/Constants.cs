@@ -12,6 +12,7 @@
         public static class LobbyManager
         {
             public const int LobbyLifetime = 1800000;
+            public const int LobbyLifetimeAfterPayment = 10000;
             public const string LobbyStateDefault = "waiting_host";
         }
     }
