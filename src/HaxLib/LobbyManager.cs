@@ -42,7 +42,8 @@
             if (this.lobbies.ContainsKey(id))
             {
                 var lobby = this.lobbies[id];
-                foreach (var member in lobby.Members)
+                var temp = lobby.Members.ToList();
+                foreach (var member in temp)
                 {
                     this.LeaveLobby(id, member.ID);
                 }

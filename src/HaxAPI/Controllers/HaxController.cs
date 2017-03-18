@@ -90,6 +90,25 @@
             }
         }
 
+        [HttpPost("lobbies/join")]
+        public IActionResult JoinLobby([RequiredFromQuery] string userid, [RequiredFromQuery] string lobbyid)
+        {
+            int uid;
+            if (int.TryParse(userid, out uid))
+            {
+                if (this.lobbyManager.JoinLobby(lobbyid, uid))
+                {
+                    return Ok();
+                }
+
+                return NotFound();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpPost("lobbies/set")]
         public IActionResult Set([FromBody] SetRequestBody request)
         {
