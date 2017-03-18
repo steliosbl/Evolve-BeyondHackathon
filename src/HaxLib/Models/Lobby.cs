@@ -2,14 +2,15 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public sealed class Lobby
     {
-        public Lobby(int id, string state, int hostid) : this(id, state, hostid, null, null, new List<User>())
+        public Lobby(string id, string state, int hostid) : this(id, state, hostid, null, null, new List<User>())
         {
         }
 
-        public Lobby(int id, string state, int hostid, float? totalpayamount, string receipturl, List<User> members)
+        public Lobby(string id, string state, int hostid, float? totalpayamount, string receipturl, List<User> members)
         {
             this.ID = id;
             this.State = state;
@@ -19,7 +20,7 @@
             this.Members = members;
         }
 
-        public int ID { get; private set; }
+        public string ID { get; private set; }
 
         public string State { get; private set; }
 
@@ -30,5 +31,64 @@
         public string ReceiptUrl { get; private set; }
 
         public List<User> Members { get; private set; }
+
+        public bool AllVerified
+        {
+            get
+            {
+                return this.Members.Count(member => !member.Verified) == 0;
+            }
+        }
+
+        public void AddMember(User member)
+        {
+            this.Members.Add(member);
+        }
+
+        public void RemoveMember(int id)
+        {
+            this.Members.RemoveAll(member => member.ID == id);
+        }
+
+        public void SetReceiptUrl(string url)
+        {
+            this.ReceiptUrl = url;
+        }
+
+        public void SetTotalAmount(float amount)
+        {
+            this.TotalPayAmount = amount;
+        }
+
+        public void SetVerified(int id, bool verified)
+        {
+            this.Members[id].SetVerified(verified);
+        }
+
+        public void UpdateMember(User member)
+        {
+            this.Members.RemoveAll(m => m.ID == member.ID);
+            this.Members.Add(member);
+        }
+
+        public User GetMember(int id)
+        {
+            if (this.HasMember(id))
+            {
+                return this.Members.First(member => member.ID == id); 
+            }
+
+            return null;
+        }
+
+        public bool HasMember(int id)
+        {
+            return this.Members.Count(member => member.ID == id) == 1;
+        }
+
+        public void BeginPayment()
+        {
+            this.State = "paying";
+        }
     }
 }
