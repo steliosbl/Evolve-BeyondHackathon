@@ -2,7 +2,7 @@
 {
     public sealed class User
     {
-        public User(int id, string name, bool verified, int? lobbyid, decimal? payamount)
+        public User(int id, string name, bool verified, int? lobbyid, float? payamount)
         {
             this.ID = id;
             this.Name = name;
@@ -19,7 +19,7 @@
 
         public int? LobbyID { get; private set; }
 
-        public decimal? PayAmount { get; private set; }
+        public float? PayAmount { get; private set; }
 
         public void Reset()
         {

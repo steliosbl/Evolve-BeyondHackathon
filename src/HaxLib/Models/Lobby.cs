@@ -9,7 +9,7 @@
         {
         }
 
-        public Lobby(int id, string state, int hostid, decimal? totalpayamount, string receipturl, List<User> members)
+        public Lobby(int id, string state, int hostid, float? totalpayamount, string receipturl, List<User> members)
         {
             this.ID = id;
             this.State = state;
@@ -25,7 +25,7 @@
 
         public int HostID { get; private set; }
 
-        public decimal? TotalPayAmount { get; private set; }
+        public float? TotalPayAmount { get; private set; }
 
         public string ReceiptUrl { get; private set; }
 
