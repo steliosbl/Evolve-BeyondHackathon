@@ -40,7 +40,7 @@
                     {
                         while (reader.Read())
                         {
-                            res = new User(reader.GetInt32(0), reader.GetString(1), reader.GetBoolean(2), reader.GetInt32(3), reader.GetFloat(4));
+                            res = new User(reader.GetInt32(0), reader.GetString(1), reader.GetBoolean(2), reader.GetIntNullCheck(3), reader.GetFloatNullCheck(4));
                         }
                     }
                 }
@@ -62,7 +62,7 @@
                     {
                         while (reader.Read())
                         {
-                            res = new Lobby(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetFloat(3), reader.GetString(4), this.GetLobbyMembers(id));
+                            res = new Lobby(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetFloatNullCheck(3), reader.GetStringNullCheck(4), this.GetLobbyMembers(id));
                         }
                     }
                 }
