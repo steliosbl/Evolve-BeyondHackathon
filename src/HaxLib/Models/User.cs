@@ -2,7 +2,7 @@
 {
     public sealed class User
     {
-        public User(int id, string name, bool verified, int? lobbyid, float? payamount)
+        public User(int id, string name, bool verified, string lobbyid, float? payamount)
         {
             this.ID = id;
             this.Name = name;
@@ -17,7 +17,7 @@
 
         public bool Verified { get; private set; }
 
-        public int? LobbyID { get; private set; }
+        public string LobbyID { get; private set; }
 
         public float? PayAmount { get; private set; }
 
@@ -25,6 +25,22 @@
         {
             this.PayAmount = null;
             this.LobbyID = null;
+            this.Verified = false;
+        }
+
+        public void SetLobby(string id)
+        {
+            this.LobbyID = id;
+        }
+
+        public void SetPayAmount(float amount)
+        {
+            this.PayAmount = amount;
+        }
+
+        public void SetVerified(bool verified)
+        {
+            this.Verified = verified;
         }
     }
 }
