@@ -8,5 +8,11 @@
             public const string UserTableName = "users";
             public const string LobbyTableName = "lobbies";
         }
+
+        public static class LobbyManager
+        {
+            public const int LobbyLifetime = 1800000;
+            public const string LobbyState_Default = "waiting_host";
+        }
     }
 }

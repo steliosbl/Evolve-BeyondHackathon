@@ -5,28 +5,18 @@
 
     public interface IDatabase
     {
-        User GetUser(int id);
+        User Get(int id);
 
-        User GetUser(string name);
-
-        Lobby GetLobby(int id);
+        User Get(string name);
 
         List<User> GetLobbyMembers(int id);
 
-        bool AddUser(User user);
+        bool Add(User user);
 
-        bool AddLobby(Lobby lobby);
+        bool Update(User user);
 
-        bool UpdateUser(User user);
+        bool Delete(int id);
 
-        bool UpdateLobby(Lobby lobby);
-
-        bool DeleteUser(int id);
-
-        bool DeleteLobby(int id);
-
-        int CountUsers();
-
-        int CountLobbies();
+        int Count();
     }
 }
