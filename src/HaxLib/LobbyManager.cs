@@ -98,6 +98,7 @@
             if (this.lobbies.ContainsKey(id))
             {
                 this.lobbies[id].SetTotalAmount(amount);
+                return true;
             }
 
             return false;
@@ -110,7 +111,7 @@
                 var member = this.lobbies[id].GetMember(userID);
                 if (member != null)
                 {
-                    member.SetPayAmount(userID);
+                    member.SetPayAmount(amount);
                     this.lobbies[id].UpdateMember(member);
                     return true;
                 }
