@@ -147,6 +147,16 @@
             return false;
         }
 
+        public bool SetHostConfirmed(string id, bool conf)
+        {
+            if (this.lobbies.ContainsKey(id))
+            {
+                this.lobbies[id].SetConfirmed(conf);
+            }
+
+            return false;
+        }
+
         public bool BeginPayment(string id)
         {
             if (this.lobbies.ContainsKey(id))

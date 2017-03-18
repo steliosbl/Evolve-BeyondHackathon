@@ -9,11 +9,11 @@
     {
         private Timer timer;
 
-        public Lobby(string id, string state, int hostid) : this(id, state, hostid, null, null, new List<User>())
+        public Lobby(string id, string state, int hostid) : this(id, state, hostid, null, null, new List<User>(), false)
         {
         }
 
-        public Lobby(string id, string state, int hostid, float? totalpayamount, string receipturl, List<User> members)
+        public Lobby(string id, string state, int hostid, float? totalpayamount, string receipturl, List<User> members, bool hostconfirmed)
         {
             this.ID = id;
             this.State = state;
@@ -21,6 +21,7 @@
             this.TotalPayAmount = totalpayamount;
             this.ReceiptUrl = receipturl;
             this.Members = members;
+            this.HostConfirmed = hostconfirmed;
         }
 
         public delegate bool LobbyExpiredHandler(string id);
@@ -38,6 +39,8 @@
         public string ReceiptUrl { get; private set; }
 
         public List<User> Members { get; private set; }
+
+        public bool HostConfirmed { get; private set; }
 
         public bool AllVerified
         {
@@ -105,6 +108,19 @@
             this.timer.AutoReset = false;
             this.timer.Elapsed += (s, e) => { LobbyExpired(this.ID); };
             this.timer.Start();
+        }
+
+        public void SetConfirmed(bool conf)
+        {
+            this.HostConfirmed = conf;
+        }
+
+        private void UpdateState()
+        {
+            if (this.State == Constants.LobbyManager.LobbyStateDefault)
+            {
+
+            }
         }
     }
 }

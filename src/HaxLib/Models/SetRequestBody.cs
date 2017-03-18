@@ -8,5 +8,6 @@
         public float? userPayAmount;
         public string receiptUrl;
         public bool? verified;
+        public bool? hostConfirmed;
     }
 }

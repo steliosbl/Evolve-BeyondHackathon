@@ -165,6 +165,17 @@
                         return NotFound();
                     }
                 }
+                else if (request.hostConfirmed != null)
+                {
+                    if (this.lobbyManager.SetHostConfirmed(request.lobbyID, (bool)request.hostConfirmed))
+                    {
+                        return Ok();
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
             }
 
             return BadRequest();

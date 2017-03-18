@@ -22,6 +22,8 @@
 
         bool SetUserVerified(string id, int userid, bool verified);
 
+        bool SetHostConfirmed(string id, bool conf);
+
         bool BeginPayment(string id);
     }
 }
