@@ -18,6 +18,5 @@
             this.database = database;
         }
 
-
     }
 }
