@@ -53,11 +53,13 @@
         public void AddMember(User member)
         {
             this.Members.Add(member);
+            this.UpdateState();
         }
 
         public void RemoveMember(int id)
         {
             this.Members.RemoveAll(member => member.ID == id);
+            this.UpdateState();
         }
 
         public void SetReceiptUrl(string url)
@@ -72,13 +74,15 @@
 
         public void SetVerified(int id, bool verified)
         {
-            this.Members[id].SetVerified(verified);
+            this.Members.First(member => member.ID == id).SetVerified(verified);
+            this.UpdateState();
         }
 
         public void UpdateMember(User member)
         {
             this.Members.RemoveAll(m => m.ID == member.ID);
             this.Members.Add(member);
+            this.UpdateState();
         }
 
         public User GetMember(int id)
@@ -113,13 +117,22 @@
         public void SetConfirmed(bool conf)
         {
             this.HostConfirmed = conf;
+            this.UpdateState();
         }
 
         private void UpdateState()
         {
-            if (this.State == Constants.LobbyManager.LobbyStateDefault)
+            if (!this.HostConfirmed)
             {
-
+                this.State = "waiting_host";
+            }
+            else if (!this.AllVerified)
+            {
+                this.State = "waiting_users_lock";
+            }
+            else
+            {
+                this.State = "ready";
             }
         }
     }

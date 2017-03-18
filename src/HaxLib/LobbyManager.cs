@@ -135,11 +135,9 @@
         {
             if (this.lobbies.ContainsKey(id))
             {
-                var member = this.lobbies[id].GetMember(userID);
-                if (member != null)
+                if (this.lobbies[id].HasMember(userID))
                 {
-                    member.SetVerified(verified);
-                    this.lobbies[id].UpdateMember(member);
+                    this.lobbies[id].SetVerified(userID, verified);
                     return true;
                 }
             }
@@ -152,6 +150,7 @@
             if (this.lobbies.ContainsKey(id))
             {
                 this.lobbies[id].SetConfirmed(conf);
+                return true;
             }
 
             return false;
