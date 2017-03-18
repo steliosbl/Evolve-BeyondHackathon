@@ -4,23 +4,23 @@
 
     public interface ILobbyManager
     {
-        bool CreateLobby(int hostID);
+        string CreateLobby(int hostid);
 
-        bool DeleteLobby(string ID);
+        bool DeleteLobby(string id);
 
-        bool JoinLobby(string ID, int userID);
+        bool JoinLobby(string id, int userid);
 
-        bool LeaveLobby(string ID, int userID);
+        bool LeaveLobby(string id, int userid);
 
-        Lobby GetLobby(string ID);
+        Lobby GetLobby(string id);
 
-        bool SetTotalPayAmount(string ID, float amount);
+        bool SetTotalPayAmount(string id, float amount);
 
-        bool SetUserPayAmount(string id, int userID, float amount);
+        bool SetUserPayAmount(string id, int userid, float amount);
 
-        bool SetReceiptUrl(string id, string ID);
+        bool SetReceiptUrl(string id, string url);
 
-        bool SetUserVerified(string id, int userID, bool verified);
+        bool SetUserVerified(string id, int userid, bool verified);
 
         bool BeginPayment(string id);
     }

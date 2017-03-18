@@ -16,7 +16,7 @@
             this.database = database;
         }
 
-        public bool CreateLobby(int hostID)
+        public string CreateLobby(int hostID)
         {
             var host = this.database.Get(hostID);
             if (host != null && host.LobbyID == null)
@@ -27,14 +27,14 @@
                     id = Guid.NewGuid().ToString();
                 }
 
-                this.lobbies.Add(id, new Lobby(id, Constants.LobbyManager.LobbyState_Default, host.ID));
+                this.lobbies.Add(id, new Lobby(id, Constants.LobbyManager.LobbyStateDefault, host.ID));
                 this.JoinLobby(id, host.ID);
                 this.lobbies[id].BeginTimer(this.DeleteLobby);
 
-                return true;
+                return id;
             }
 
-            return false;
+            return null;
         }
 
         public bool DeleteLobby(string id)
@@ -42,7 +42,7 @@
             if (this.lobbies.ContainsKey(id))
             {
                 var lobby = this.lobbies[id];
-                foreach(var member in lobby.Members)
+                foreach (var member in lobby.Members)
                 {
                     this.LeaveLobby(id, member.ID);
                 }

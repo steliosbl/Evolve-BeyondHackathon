@@ -8,6 +8,7 @@
     public sealed class Lobby
     {
         private Timer timer;
+
         public Lobby(string id, string state, int hostid) : this(id, state, hostid, null, null, new List<User>())
         {
         }
@@ -22,6 +23,10 @@
             this.Members = members;
         }
 
+        public delegate bool LobbyExpiredHandler(string id);
+
+        public event LobbyExpiredHandler LobbyExpired;
+
         public string ID { get; private set; }
 
         public string State { get; private set; }
@@ -33,10 +38,6 @@
         public string ReceiptUrl { get; private set; }
 
         public List<User> Members { get; private set; }
-
-        public delegate bool LobbyExpiredHandler(string id);
-
-        public event LobbyExpiredHandler LobbyExpired;
 
         public bool AllVerified
         {

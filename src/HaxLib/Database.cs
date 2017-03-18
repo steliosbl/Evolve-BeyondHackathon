@@ -4,9 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using Models;
     using MySql.Data.MySqlClient;
     using SDatabase.MySQL;
-    using Models;
 
     public sealed class Database : IDatabase
     {
@@ -40,7 +40,7 @@
                     {
                         while (reader.Read())
                         {
-                            res = new User(reader.GetInt32(0), reader.GetString(1), reader.GetBoolean(2), reader.GetIntNullCheck(3), reader.GetFloatNullCheck(4));
+                            res = new User(reader.GetInt32(0), reader.GetString(1), reader.GetBoolean(2), reader.GetStringNullCheck(3), reader.GetFloatNullCheck(4));
                         }
                     }
                 }
@@ -53,7 +53,7 @@
         {
             using (var cmd = new MySqlCommand(string.Format("SELECT id FROM {0} WHERE name=@name", Constants.Database.UserTableName), this.connection))
             {
-                return this.GetUser(System.Convert.ToInt32(cmd.ExecuteScalar()));
+                return this.Get(System.Convert.ToInt32(cmd.ExecuteScalar()));
             }
         }
 
@@ -90,7 +90,7 @@
                 {
                     while (reader.Read())
                     {
-                        res.Add(this.GetUser(reader.GetInt32(0)));
+                        res.Add(this.Get(reader.GetInt32(0)));
                     }
                 }
             }
@@ -112,6 +112,7 @@
                     cmd.Parameters.AddWithValue("@payamount", user.PayAmount);
                     cmd.ExecuteNonQuery();
                 }
+
                     return true;
             }
 
@@ -142,8 +143,8 @@
         {
             if (this.UserExists(user.ID))
             {
-                this.DeleteUser(user.ID);
-                this.AddUser(user);
+                this.Delete(user.ID);
+                this.Add(user);
                 return true;
             }
 

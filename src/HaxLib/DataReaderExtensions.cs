@@ -2,7 +2,8 @@
 {
     using System;
     using System.Data;
-    static class DataReaderExtensions
+
+    public static class DataReaderExtensions
     {
         public static string GetStringNullCheck(this IDataReader reader, int ordinal)
         {
