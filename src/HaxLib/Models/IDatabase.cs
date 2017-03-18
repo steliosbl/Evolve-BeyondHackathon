@@ -7,6 +7,8 @@
     {
         User GetUser(int id);
 
+        User GetUser(string name);
+
         Lobby GetLobby(int id);
 
         List<User> GetLobbyMembers(int id);

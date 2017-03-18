@@ -49,6 +49,14 @@
             return res;
         }
 
+        public User GetUser(string name)
+        {
+            using (var cmd = new MySqlCommand(string.Format("SELECT id FROM {0} WHERE name=@name", Constants.Database.UserTableName), this.connection))
+            {
+                return this.GetUser(System.Convert.ToInt32(cmd.ExecuteScalar()));
+            }
+        }
+
         public Lobby GetLobby(int id)
         {
             Lobby res = null;
