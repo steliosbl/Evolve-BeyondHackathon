@@ -1,4 +1,4 @@
-﻿namespace EvolvedAPI
+﻿namespace HaxLib
 {
     using System;
     using System.IO;
