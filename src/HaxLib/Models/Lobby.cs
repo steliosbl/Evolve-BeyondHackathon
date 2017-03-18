@@ -3,9 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Timers;
 
     public sealed class Lobby
     {
+        private Timer timer;
         public Lobby(string id, string state, int hostid) : this(id, state, hostid, null, null, new List<User>())
         {
         }
@@ -31,6 +33,10 @@
         public string ReceiptUrl { get; private set; }
 
         public List<User> Members { get; private set; }
+
+        public delegate bool LobbyExpiredHandler(string id);
+
+        public event LobbyExpiredHandler LobbyExpired;
 
         public bool AllVerified
         {
@@ -89,6 +95,15 @@
         public void BeginPayment()
         {
             this.State = "paying";
+        }
+
+        public void BeginTimer(LobbyExpiredHandler handler)
+        {
+            this.LobbyExpired += handler;
+            this.timer = new Timer((double)Constants.LobbyManager.LobbyLifetime);
+            this.timer.AutoReset = false;
+            this.timer.Elapsed += (s, e) => { LobbyExpired(this.ID); };
+            this.timer.Start();
         }
     }
 }

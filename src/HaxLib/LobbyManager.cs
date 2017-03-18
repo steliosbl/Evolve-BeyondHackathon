@@ -29,6 +29,7 @@
 
                 this.lobbies.Add(id, new Lobby(id, Constants.LobbyManager.LobbyState_Default, host.ID));
                 this.JoinLobby(id, host.ID);
+                this.lobbies[id].BeginTimer(this.DeleteLobby);
 
                 return true;
             }
