@@ -89,5 +89,77 @@
                 return BadRequest();
             }
         }
+
+        [HttpPost("lobbies/set")]
+        public IActionResult Set([FromBody] SetRequestBody request)
+        {
+            if (request.lobbyID != null)
+            {
+                if (request.userID != null)
+                {
+                    if (request.userPayAmount != null)
+                    {
+                        if (this.lobbyManager.SetUserPayAmount(request.lobbyID, (int)request.userID, (float)request.userPayAmount))
+                        {
+                            return Ok();
+                        }
+                        else
+                        {
+                            return NotFound();
+                        }
+                    }
+                    else if (request.verified != null)
+                    {
+                        if (this.lobbyManager.SetUserVerified(request.lobbyID, (int)request.userID, (bool)request.verified))
+                        {
+                            return Ok();
+                        }
+                        else
+                        {
+                            return NotFound();
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
+                }
+                else if (request.receiptUrl != null)
+                {
+                    if (this.lobbyManager.SetReceiptUrl(request.lobbyID, request.receiptUrl))
+                    {
+                        return Ok();
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                else if (request.totalPayAmount != null)
+                {
+                    if (this.lobbyManager.SetTotalPayAmount(request.lobbyID, (float)request.totalPayAmount))
+                    {
+                        return Ok();
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPost("lobbies/pay")]
+        public IActionResult BeginPayment([FromBody] string id)
+        {
+            if (this.lobbyManager.BeginPayment(id))
+            {
+                return Ok();
+            }
+
+            return NotFound();
+        }
     }
 }
