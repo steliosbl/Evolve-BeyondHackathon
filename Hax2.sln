@@ -10,7 +10,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Hax2", "src\Hax2\Hax2.xproj", "{EBECBB11-FA35-48D7-AB74-0134D4539DC1}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "HaxAPI", "src\HaxAPI\HaxAPI.xproj", "{953C4CE8-A1F8-4ED1-82F5-C40C13476376}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "HaxLib", "src\HaxLib\HaxLib.xproj", "{B13BB495-F0D2-4D0A-A5D3-7B0153A6E2FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,15 +20,20 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EBECBB11-FA35-48D7-AB74-0134D4539DC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EBECBB11-FA35-48D7-AB74-0134D4539DC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EBECBB11-FA35-48D7-AB74-0134D4539DC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EBECBB11-FA35-48D7-AB74-0134D4539DC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{953C4CE8-A1F8-4ED1-82F5-C40C13476376}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{953C4CE8-A1F8-4ED1-82F5-C40C13476376}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{953C4CE8-A1F8-4ED1-82F5-C40C13476376}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{953C4CE8-A1F8-4ED1-82F5-C40C13476376}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B13BB495-F0D2-4D0A-A5D3-7B0153A6E2FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B13BB495-F0D2-4D0A-A5D3-7B0153A6E2FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B13BB495-F0D2-4D0A-A5D3-7B0153A6E2FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B13BB495-F0D2-4D0A-A5D3-7B0153A6E2FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{EBECBB11-FA35-48D7-AB74-0134D4539DC1} = {909471AA-3855-46CF-A663-68F94598C38E}
+		{953C4CE8-A1F8-4ED1-82F5-C40C13476376} = {909471AA-3855-46CF-A663-68F94598C38E}
+		{B13BB495-F0D2-4D0A-A5D3-7B0153A6E2FA} = {909471AA-3855-46CF-A663-68F94598C38E}
 	EndGlobalSection
 EndGlobal
