@@ -19,6 +19,10 @@
 
         bool UpdateLobby(Lobby lobby);
 
+        bool DeleteUser(User user);
+
+        bool DeleteLobby(Lobby lobby);
+
         int CountUsers();
 
         int CountLobbies();
