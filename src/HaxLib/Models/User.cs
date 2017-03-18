@@ -20,5 +20,11 @@
         public int? LobbyID { get; private set; }
 
         public decimal? PayAmount { get; private set; }
+
+        public void Reset()
+        {
+            this.PayAmount = null;
+            this.LobbyID = null;
+        }
     }
 }
