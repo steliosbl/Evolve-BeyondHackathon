@@ -40,7 +40,7 @@
                     {
                         while (reader.Read())
                         {
-                            res = new User(reader.GetInt32(0), reader.GetString(1), reader.GetBoolean(2), reader.GetStringNullCheck(3), reader.GetFloatNullCheck(4));
+                            res = new User(reader.GetInt32(0), reader.GetString(1), reader.GetStringNullCheck(2));
                         }
                     }
                 }
@@ -102,14 +102,12 @@
         {
             if (!this.UserExists(user.ID))
             {
-                using (var cmd = new MySqlCommand(string.Format("INSERT INTO {0} VALUES (@id, @name, @verified, @lobbyid, @payamount", Constants.Database.UserTableName), this.connection))
+                using (var cmd = new MySqlCommand(string.Format("INSERT INTO {0} VALUES (@id, @name, @lobbyid);", Constants.Database.UserTableName), this.connection))
                 {
                     cmd.Prepare();
                     cmd.Parameters.AddWithValue("@id", user.ID);
                     cmd.Parameters.AddWithValue("@name", user.Name);
-                    cmd.Parameters.AddWithValue("@verified", user.Verified);
                     cmd.Parameters.AddWithValue("@lobbyid", user.LobbyID);
-                    cmd.Parameters.AddWithValue("@payamount", user.PayAmount);
                     cmd.ExecuteNonQuery();
                 }
 
@@ -169,6 +167,8 @@
             {
                 using (var cmd = new MySqlCommand(string.Format("DELETE FROM {0} WHERE id=@id", Constants.Database.UserTableName), this.connection))
                 {
+                    cmd.Prepare();
+                    cmd.Parameters.AddWithValue("@id", id);
                     cmd.ExecuteNonQuery();
                     return true;
                 }

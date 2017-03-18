@@ -2,6 +2,10 @@
 {
     public sealed class User
     {
+        public User(int id, string name, string lobbyid) : this(id, name, false, lobbyid, null)
+        {
+        }
+
         public User(int id, string name, bool verified, string lobbyid, float? payamount)
         {
             this.ID = id;

@@ -10,10 +10,10 @@
         private Dictionary<string, Lobby> lobbies;
         private IDatabase database;
 
-        public LobbyManager(IDatabase database)
+        public LobbyManager()
         {
             this.lobbies = new Dictionary<string, Lobby>();
-            this.database = database;
+            this.database = new Database();
         }
 
         public string CreateLobby(int hostID)

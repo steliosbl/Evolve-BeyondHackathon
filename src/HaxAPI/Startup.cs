@@ -31,6 +31,7 @@
             services.AddMvc();
 
             services.AddSingleton<HaxLib.Models.IDatabase, HaxLib.Database>();
+            services.AddSingleton<HaxLib.Models.ILobbyManager, HaxLib.LobbyManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline

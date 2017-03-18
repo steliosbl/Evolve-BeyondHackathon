@@ -14,10 +14,10 @@
         private IDatabase database;
         private ILobbyManager lobbyManager;
 
-        public HaxController(IDatabase database, ILobbyManager lobbyManager)
+        public HaxController(IDatabase database, ILobbyManager manager)
         {
             this.database = database;
-            this.lobbyManager = new LobbyManager(this.database);
+            this.lobbyManager = manager;
         }
 
         [HttpGet("users")]
@@ -56,6 +56,7 @@
             }
         }
 
+        [HttpGet("lobbies")]
         public IActionResult GetLobbyInfo([RequiredFromQuery] string id)
         {
             var lobby = this.lobbyManager.GetLobby(id);
