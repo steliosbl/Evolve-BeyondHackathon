@@ -40,7 +40,7 @@
                     {
                         while (reader.Read())
                         {
-                            res = new User(reader.GetInt32(0), reader.GetString(1), reader.GetStringNullCheck(2));
+                            res = new User(reader.GetInt32(0), reader.GetString(1), reader.GetStringNullCheck(2), reader.GetInt32(3));
                         }
                     }
                 }
@@ -102,12 +102,13 @@
         {
             if (!this.UserExists(user.ID))
             {
-                using (var cmd = new MySqlCommand(string.Format("INSERT INTO {0} VALUES (@id, @name, @lobbyid);", Constants.Database.UserTableName), this.connection))
+                using (var cmd = new MySqlCommand(string.Format("INSERT INTO {0} VALUES (@id, @name, @lobbyid, @balance);", Constants.Database.UserTableName), this.connection))
                 {
                     cmd.Prepare();
                     cmd.Parameters.AddWithValue("@id", user.ID);
                     cmd.Parameters.AddWithValue("@name", user.Name);
                     cmd.Parameters.AddWithValue("@lobbyid", user.LobbyID);
+                    cmd.Parameters.AddWithValue("@balance", user.Balance);
                     cmd.ExecuteNonQuery();
                 }
 
@@ -209,6 +210,23 @@
         ////    return this.Count(Constants.Database.LobbyTableName);
         ////}
 
+        public bool Pay(int id, float amount)
+        {
+            if (this.MerchantExists(id))
+            {
+                using (var cmd = new MySqlCommand(string.Format("UPDATE {0} SET balance=@balance WHERE id=@id", Constants.Database.MerchantTableName), this.connection))
+                {
+                    cmd.Prepare();
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@balance", Math.Abs(amount));
+                    cmd.ExecuteNonQuery();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private int CountElements(string tableName)
         {
             using (var cmd = new MySqlCommand(string.Format("SELECT COUNT(*) FROM {0}", tableName), this.connection))
@@ -220,6 +238,11 @@
         private bool UserExists(int id)
         {
             return this.Exists(id, Constants.Database.UserTableName);
+        }
+
+        private bool MerchantExists(int id)
+        {
+            return this.Exists(id, Constants.Database.MerchantTableName);
         }
 
         ////private bool LobbyExists(int id)

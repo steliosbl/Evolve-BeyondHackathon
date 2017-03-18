@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Models;
 
     public sealed class LobbyManager : ILobbyManager
@@ -58,7 +59,7 @@
         public bool JoinLobby(string id, int userID)
         {
             var user = this.database.Get(userID);
-            if (this.lobbies.ContainsKey(id) && user != null)
+            if (this.lobbies.ContainsKey(id) && user != null && user.LobbyID == null)
             {
                 this.lobbies[id].AddMember(user);
                 user.SetLobby(id);
@@ -156,12 +157,55 @@
             return false;
         }
 
-        public bool BeginPayment(string id)
+        public bool SetMerchant(string id, int mid)
         {
             if (this.lobbies.ContainsKey(id))
             {
-                this.lobbies[id].BeginPayment();
+                this.lobbies[id].SetMerchant(mid);
                 return true;
+            }
+
+            return false;
+        }
+
+        public bool InitPayment(string id)
+        {
+            if (this.lobbies.ContainsKey(id))
+            {
+                this.lobbies[id].InitPayment();
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool?> Pay(string id)
+        {
+            if (this.lobbies.ContainsKey(id))
+            {
+                Task<bool> task = Task.Run(() => this.ProcessPayment(id));
+                bool res = await task;
+                this.lobbies[id].BeginExpirationTimer(Constants.LobbyManager.LobbyLifetimeAfterPayment);
+                return res;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private bool ProcessPayment(string id)
+        {
+            var lobby = this.lobbies[id];
+            if (lobby.AllVerified && lobby.HostConfirmed && lobby.Members.Sum(member => member.PayAmount) == lobby.TotalPayAmount)
+            {
+                foreach (var member in lobby.Members)
+                {
+                    member.SetBalance(member.Balance - (float)member.PayAmount);
+                    this.database.Update(member);
+                }
+
+                return this.database.Pay((int)lobby.MerchantID, (float)lobby.TotalPayAmount);
             }
 
             return false;

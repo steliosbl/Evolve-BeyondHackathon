@@ -18,5 +18,7 @@
         bool Delete(int id);
 
         int Count();
+
+        bool Pay(int id, float amount);
     }
 }

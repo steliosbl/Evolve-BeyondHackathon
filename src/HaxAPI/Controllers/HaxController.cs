@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using HaxLib;
     using HaxLib.Models;
     using Microsoft.AspNetCore.Mvc;
@@ -176,15 +175,26 @@
                         return NotFound();
                     }
                 }
+                else if (request.merchantID != null)
+                {
+                    if (this.lobbyManager.SetMerchant(request.lobbyID, (int)request.merchantID))
+                    {
+                        return Ok();
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
             }
 
             return BadRequest();
         }
 
-        [HttpPost("lobbies/pay")]
-        public IActionResult BeginPayment([FromBody] string id)
+        [HttpPost("lobbies/pay/init")]
+        public IActionResult InitPayment([FromBody] string id)
         {
-            if (this.lobbyManager.BeginPayment(id))
+            if (this.lobbyManager.InitPayment(id))
             {
                 return Ok();
             }
@@ -201,6 +211,24 @@
             }
 
             return NotFound();
+        }
+
+        [HttpPost("lobbies/pay/begin")]
+        public IActionResult Pay([FromBody] string id)
+        {
+            bool? result = this.lobbyManager.Pay(id).Result;
+            if (result == null)
+            {
+                return NotFound();
+            }
+            else if ((bool)result)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }

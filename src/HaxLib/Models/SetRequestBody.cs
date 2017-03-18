@@ -9,5 +9,6 @@
         public string receiptUrl;
         public bool? verified;
         public bool? hostConfirmed;
+        public int? merchantID;
     }
 }

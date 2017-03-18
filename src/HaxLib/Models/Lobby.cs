@@ -10,11 +10,11 @@
     {
         private Timer expirationTimer;
 
-        public Lobby(string id, string state, int hostid, LobbyExpiredHandler expirationHandler) : this(id, state, hostid, null, null, new List<User>(), false, false, expirationHandler)
+        public Lobby(string id, string state, int hostid, LobbyExpiredHandler expirationHandler) : this(id, state, hostid, null, null, new List<User>(), false, false, null, expirationHandler)
         {
         }
 
-        public Lobby(string id, string state, int hostid, float? totalpayamount, string receipturl, List<User> members, bool hostconfirmed, bool paymentcomplete, LobbyExpiredHandler expirationHandler)
+        public Lobby(string id, string state, int hostid, float? totalpayamount, string receipturl, List<User> members, bool hostconfirmed, bool paymentcomplete, int?merchantID, LobbyExpiredHandler expirationHandler)
         {
             this.ID = id;
             this.State = state;
@@ -24,6 +24,7 @@
             this.Members = members;
             this.HostConfirmed = hostconfirmed;
             this.PaymentComplete = paymentcomplete;
+            this.MerchantID = merchantID;
             this.LobbyExpired += expirationHandler;
         }
 
@@ -46,6 +47,8 @@
         public bool HostConfirmed { get; private set; }
 
         public bool PaymentComplete { get; private set; }
+
+        public int? MerchantID { get; private set; }
 
         public bool AllVerified
         {
@@ -105,17 +108,18 @@
             return this.Members.Count(member => member.ID == id) == 1;
         }
 
-        public async void BeginPayment()
+        public void InitPayment()
         {
             this.State = "paying";
-            Task<bool> payTask = Pay();
-            this.PaymentComplete = await payTask;
-            this.expirationTimer.Stop();
-            this.BeginExpirationTimer(Constants.LobbyManager.LobbyLifetimeAfterPayment);
         }
 
         public void BeginExpirationTimer(int duration)
         {
+            if (this.expirationTimer != null)
+            {
+                this.expirationTimer.Stop();
+            }
+
             this.expirationTimer = new Timer((double)duration);
             this.expirationTimer.AutoReset = false;
             this.expirationTimer.Elapsed += (s, e) => { LobbyExpired(this.ID); };
@@ -126,6 +130,11 @@
         {
             this.HostConfirmed = conf;
             this.UpdateState();
+        }
+
+        public void SetMerchant(int? id)
+        {
+            this.MerchantID = id;
         }
 
         private void UpdateState()
@@ -142,18 +151,6 @@
             {
                 this.State = "ready";
             }
-        }
-
-        private async Task<bool> Pay()
-        {
-            Task<bool> task = Task.Run(() => this.ProcessPayment());
-            bool res = await task;
-            return res;
-        }
-
-        private bool ProcessPayment()
-        {
-            return true;
         }
     }
 }

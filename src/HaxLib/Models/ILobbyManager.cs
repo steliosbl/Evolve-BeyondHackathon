@@ -24,6 +24,10 @@
 
         bool SetHostConfirmed(string id, bool conf);
 
-        bool BeginPayment(string id);
+        bool InitPayment(string id);
+
+        bool SetMerchant(string id, int mid);
+
+        System.Threading.Tasks.Task<bool?> Pay(string id);
     }
 }

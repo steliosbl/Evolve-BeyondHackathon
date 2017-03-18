@@ -6,7 +6,7 @@
         {
             public const string ConfigFilename = "DB.cfg";
             public const string UserTableName = "users";
-            public const string LobbyTableName = "lobbies";
+            public const string MerchantTableName = "merchants";
         }
 
         public static class LobbyManager
