@@ -22,10 +22,10 @@
             var host = this.database.Get(hostID);
             if (host != null && host.LobbyID == null)
             {
-                string id = Guid.NewGuid().ToString();
+                string id = Guid.NewGuid().ToString().Substring(0,10);
                 while (this.lobbies.ContainsKey(id))
                 {
-                    id = Guid.NewGuid().ToString();
+                    id = Guid.NewGuid().ToString().Substring(0, 10);
                 }
 
                 this.lobbies.Add(id, new Lobby(id, Constants.LobbyManager.LobbyStateDefault, host.ID, this.DeleteLobby));

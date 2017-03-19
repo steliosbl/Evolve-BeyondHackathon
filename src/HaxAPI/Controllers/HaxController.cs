@@ -28,7 +28,7 @@
                 var user = this.database.Get(userID);
                 if (user != null)
                 {
-                    return new ObjectResult(user.Name);
+                    return new ObjectResult(new { name = user.Name });
                 }
                 else
                 {
@@ -47,7 +47,7 @@
             var user = this.database.Get(name);
             if (user != null)
             {
-                return new ObjectResult(user.ID);
+                return new ObjectResult(new { name = user.ID });
             }
             else
             {
