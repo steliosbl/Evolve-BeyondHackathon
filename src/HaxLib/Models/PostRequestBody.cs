@@ -1,6 +1,6 @@
 ﻿namespace HaxLib.Models
 {
-    public sealed class SetRequestBody
+    public sealed class PostRequestBody
     {
         public string lobbyID;
         public int? userID;

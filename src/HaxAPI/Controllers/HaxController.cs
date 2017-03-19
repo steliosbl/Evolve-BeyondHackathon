@@ -68,12 +68,11 @@
         }
 
         [HttpPost("lobbies/new")]
-        public IActionResult CreateLobby([FromBody] string userID)
+        public IActionResult CreateLobby([FromBody] PostRequestBody body)
         {
-            int id;
-            if (int.TryParse(userID, out id))
+            if (body.userID != null)
             {
-                string lid = this.lobbyManager.CreateLobby(id);
+                string lid = this.lobbyManager.CreateLobby((int)body.userID);
                 if (lid != null)
                 {
                     return new ObjectResult(new { lid = lid });
@@ -83,41 +82,36 @@
                     return NotFound();
                 }
             }
-            else
-            {
-                return BadRequest();
-            }
+
+            return BadRequest();
         }
 
         [HttpPost("lobbies/join")]
-        public IActionResult JoinLobby([RequiredFromQuery] string userid, [RequiredFromQuery] string lobbyid)
+        public IActionResult JoinLobby([FromBody] PostRequestBody body)
         {
-            int uid;
-            if (int.TryParse(userid, out uid))
+            if (body.lobbyID != null && body.userID != null)
             {
-                if (this.lobbyManager.JoinLobby(lobbyid, uid))
+                if (this.lobbyManager.JoinLobby(body.lobbyID, (int)body.userID))
                 {
                     return Ok();
                 }
 
                 return NotFound();
             }
-            else
-            {
-                return BadRequest();
-            }
+
+            return BadRequest();
         }
 
         [HttpPost("lobbies/set")]
-        public IActionResult Set([FromBody] SetRequestBody request)
+        public IActionResult Set([FromBody] PostRequestBody body)
         {
-            if (request.lobbyID != null)
+            if (body.lobbyID != null)
             {
-                if (request.userID != null)
+                if (body.userID != null)
                 {
-                    if (request.userPayAmount != null)
+                    if (body.userPayAmount != null)
                     {
-                        if (this.lobbyManager.SetUserPayAmount(request.lobbyID, (int)request.userID, (float)request.userPayAmount))
+                        if (this.lobbyManager.SetUserPayAmount(body.lobbyID, (int)body.userID, (float)body.userPayAmount))
                         {
                             return Ok();
                         }
@@ -126,9 +120,9 @@
                             return NotFound();
                         }
                     }
-                    else if (request.verified != null)
+                    else if (body.verified != null)
                     {
-                        if (this.lobbyManager.SetUserVerified(request.lobbyID, (int)request.userID, (bool)request.verified))
+                        if (this.lobbyManager.SetUserVerified(body.lobbyID, (int)body.userID, (bool)body.verified))
                         {
                             return Ok();
                         }
@@ -142,9 +136,9 @@
                         return BadRequest();
                     }
                 }
-                else if (request.receiptUrl != null)
+                else if (body.receiptUrl != null)
                 {
-                    if (this.lobbyManager.SetReceiptUrl(request.lobbyID, request.receiptUrl))
+                    if (this.lobbyManager.SetReceiptUrl(body.lobbyID, body.receiptUrl))
                     {
                         return Ok();
                     }
@@ -153,9 +147,9 @@
                         return NotFound();
                     }
                 }
-                else if (request.totalPayAmount != null)
+                else if (body.totalPayAmount != null)
                 {
-                    if (this.lobbyManager.SetTotalPayAmount(request.lobbyID, (float)request.totalPayAmount))
+                    if (this.lobbyManager.SetTotalPayAmount(body.lobbyID, (float)body.totalPayAmount))
                     {
                         return Ok();
                     }
@@ -164,9 +158,9 @@
                         return NotFound();
                     }
                 }
-                else if (request.hostConfirmed != null)
+                else if (body.hostConfirmed != null)
                 {
-                    if (this.lobbyManager.SetHostConfirmed(request.lobbyID, (bool)request.hostConfirmed))
+                    if (this.lobbyManager.SetHostConfirmed(body.lobbyID, (bool)body.hostConfirmed))
                     {
                         return Ok();
                     }
@@ -175,9 +169,9 @@
                         return NotFound();
                     }
                 }
-                else if (request.merchantID != null)
+                else if (body.merchantID != null)
                 {
-                    if (this.lobbyManager.SetMerchant(request.lobbyID, (int)request.merchantID))
+                    if (this.lobbyManager.SetMerchant(body.lobbyID, (int)body.merchantID))
                     {
                         return Ok();
                     }
@@ -192,43 +186,56 @@
         }
 
         [HttpPost("lobbies/pay/init")]
-        public IActionResult InitPayment([FromBody] string id)
+        public IActionResult InitPayment([FromBody] PostRequestBody body)
         {
-            if (this.lobbyManager.InitPayment(id))
+            if (body.lobbyID != null)
             {
-                return Ok();
+                if (this.lobbyManager.InitPayment(body.lobbyID))
+                {
+                    return Ok();
+                }
+
+                return NotFound();
             }
 
-            return NotFound();
+            return BadRequest();
         }
 
         [HttpPost("lobbies/delete")]
-        public IActionResult DeleteLobby([FromBody] string id)
+        public IActionResult DeleteLobby([FromBody] PostRequestBody body)
         {
-            if (this.lobbyManager.DeleteLobby(id))
+            if (body.lobbyID != null)
             {
-                return Ok();
+                if (this.lobbyManager.DeleteLobby(body.lobbyID))
+                {
+                    return Ok();
+                }
+
+                return NotFound();
             }
 
-            return NotFound();
+            return BadRequest();
         }
 
         [HttpPost("lobbies/pay/begin")]
-        public IActionResult Pay([FromBody] string id)
+        public IActionResult Pay([FromBody] PostRequestBody body)
         {
-            bool? result = this.lobbyManager.Pay(id).Result;
-            if (result == null)
+            if (body.lobbyID != null)
             {
-                return NotFound();
+                bool? result = this.lobbyManager.Pay(body.lobbyID).Result;
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                else if ((bool)result)
+                {
+                    return Ok();
+                }
+
+                return NoContent();
             }
-            else if ((bool)result)
-            {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest();
-            }
+
+            return BadRequest();
         }
     }
 }
