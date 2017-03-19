@@ -24,7 +24,6 @@
             this.connectionData = JFI.GetObject<ConnectionData>(Constants.Database.ConfigFilename);
             this.connectionString = new ConnectionString(this.connectionData);
             this.connection = new MySqlConnection(this.connectionString.Text);
-            this.connection.Open();
         }
 
         public User Get(int id)
@@ -32,6 +31,7 @@
             User res = null;
             if (this.UserExists(id))
             {
+                this.OpenConn();
                 using (var cmd = new MySqlCommand(string.Format("SELECT * FROM {0} WHERE id=@id", Constants.Database.UserTableName), this.connection))
                 {
                     cmd.Prepare();
@@ -45,15 +45,18 @@
                     }
                 }
             }
-
+            this.CloseConn();
             return res;
         }
 
         public User Get(string name)
         {
+            this.OpenConn();
             using (var cmd = new MySqlCommand(string.Format("SELECT id FROM {0} WHERE name=@name", Constants.Database.UserTableName), this.connection))
             {
-                return this.Get(System.Convert.ToInt32(cmd.ExecuteScalar()));
+                var res = cmd.ExecuteScalar();
+                this.CloseConn();
+                return this.Get(System.Convert.ToInt32(res));
             }
         }
 
@@ -81,6 +84,7 @@
 
         public List<User> GetLobbyMembers(int id)
         {
+            this.OpenConn();
             var res = new List<User>();
             using (var cmd = new MySqlCommand(string.Format("SELECT id FROM {0} WHERE lobbyid=@lobbyid", Constants.Database.UserTableName), this.connection))
             {
@@ -95,6 +99,7 @@
                 }
             }
 
+            this.CloseConn();
             return res;
         }
 
@@ -102,6 +107,7 @@
         {
             if (!this.UserExists(user.ID))
             {
+                this.OpenConn();
                 using (var cmd = new MySqlCommand(string.Format("INSERT INTO {0} VALUES (@id, @name, @lobbyid, @balance);", Constants.Database.UserTableName), this.connection))
                 {
                     cmd.Prepare();
@@ -112,7 +118,8 @@
                     cmd.ExecuteNonQuery();
                 }
 
-                    return true;
+                this.CloseConn();
+                return true;
             }
 
             return false;
@@ -166,11 +173,13 @@
         {
             if (this.UserExists(id))
             {
+                this.OpenConn();
                 using (var cmd = new MySqlCommand(string.Format("DELETE FROM {0} WHERE id=@id", Constants.Database.UserTableName), this.connection))
                 {
                     cmd.Prepare();
                     cmd.Parameters.AddWithValue("@id", id);
                     cmd.ExecuteNonQuery();
+                    this.CloseConn();
                     return true;
                 }
             }
@@ -214,12 +223,14 @@
         {
             if (this.MerchantExists(id))
             {
+                this.OpenConn();
                 using (var cmd = new MySqlCommand(string.Format("UPDATE {0} SET balance=@balance WHERE id=@id", Constants.Database.MerchantTableName), this.connection))
                 {
                     cmd.Prepare();
                     cmd.Parameters.AddWithValue("@id", id);
                     cmd.Parameters.AddWithValue("@balance", Math.Abs(amount));
                     cmd.ExecuteNonQuery();
+                    this.CloseConn();
                     return true;
                 }
             }
@@ -229,9 +240,12 @@
 
         private int CountElements(string tableName)
         {
+            this.OpenConn();
             using (var cmd = new MySqlCommand(string.Format("SELECT COUNT(*) FROM {0}", tableName), this.connection))
             {
-                return System.Convert.ToInt32(cmd.ExecuteScalar());
+                var res = cmd.ExecuteScalar();
+                this.CloseConn();
+                return System.Convert.ToInt32(res);
             }
         }
 
@@ -252,11 +266,30 @@
 
         private bool Exists(int id, string tableName)
         {
+            this.OpenConn();
             using (var cmd = new MySqlCommand(string.Format("SELECT EXISTS(SELECT * FROM {0} WHERE id=@id);", tableName), this.connection))
             {
                 cmd.Prepare();
                 cmd.Parameters.AddWithValue("@id", id);
-                return System.Convert.ToBoolean(cmd.ExecuteScalar());
+                var res = cmd.ExecuteScalar();
+                this.CloseConn();
+                return System.Convert.ToBoolean(res);
+            }
+        }
+
+        private void OpenConn()
+        {
+            if (this.connection.State == System.Data.ConnectionState.Closed)
+            {
+                this.connection.Open();
+            }
+        }
+
+        private void CloseConn()
+        {
+            if (this.connection.State == System.Data.ConnectionState.Open)
+            {
+                this.connection.Close();
             }
         }
     }
