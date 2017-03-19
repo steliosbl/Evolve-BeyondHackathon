@@ -7,7 +7,7 @@
     using HaxLib.Models;
     using Microsoft.AspNetCore.Mvc;
 
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class HaxController : Controller
     {
         private IDatabase database;

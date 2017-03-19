@@ -39,6 +39,9 @@
         {
             loggerFactory.AddConsole(this.Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            app.UseMiddleware<Middleware.LogResponse>();
+            app.UseMiddleware<Middleware.LogRequest>();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
