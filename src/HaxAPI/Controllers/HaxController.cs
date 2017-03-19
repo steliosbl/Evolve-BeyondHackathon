@@ -102,7 +102,7 @@
             return BadRequest();
         }
 
-        [HttpPost("lobbies/join")]
+        [HttpPost("lobbies/leave")]
         public IActionResult LeaveLobby([FromBody] PostRequestBody body)
         {
             if (body.lobbyID != null && body.userID != null)
