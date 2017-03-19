@@ -28,7 +28,7 @@
                 var user = this.database.Get(userID);
                 if (user != null)
                 {
-                    return new ObjectResult(new { name = user.Name });
+                    return new ObjectResult(new { userName = user.Name });
                 }
                 else
                 {
@@ -47,7 +47,7 @@
             var user = this.database.Get(name);
             if (user != null)
             {
-                return new ObjectResult(new { name = user.ID });
+                return new ObjectResult(new { userID = user.ID });
             }
             else
             {
@@ -75,7 +75,7 @@
                 string lid = this.lobbyManager.CreateLobby((int)body.userID);
                 if (lid != null)
                 {
-                    return new ObjectResult(new { lid = lid });
+                    return new ObjectResult(new { lobbyID = lid });
                 }
                 else
                 {
@@ -93,6 +93,27 @@
             {
                 if (this.lobbyManager.JoinLobby(body.lobbyID, (int)body.userID))
                 {
+                    return Ok();
+                }
+
+                return NotFound();
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPost("lobbies/join")]
+        public IActionResult LeaveLobby([FromBody] PostRequestBody body)
+        {
+            if (body.lobbyID != null && body.userID != null)
+            {
+                if (this.lobbyManager.LeaveLobby(body.lobbyID, (int)body.userID))
+                {
+                    if ((int)body.userID == lobbyManager.GetLobby(body.lobbyID).HostID)
+                    {
+                        return this.DeleteLobby(body);
+                    }
+
                     return Ok();
                 }
 
