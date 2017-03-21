@@ -2,7 +2,7 @@
 {
     public sealed class User
     {
-        public User(int id, string name, string lobbyid, float balance) : this(id, name, false, lobbyid, null, balance)
+        public User(int id, string name, string lobbyid, float balance) : this(id, name, false, lobbyid, 0, balance)
         {
         }
 

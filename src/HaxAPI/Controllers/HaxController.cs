@@ -93,7 +93,7 @@
             {
                 if (this.lobbyManager.JoinLobby(body.lobbyID, (int)body.userID))
                 {
-                    return Ok();
+                    return new ObjectResult(new { });
                 }
 
                 return NotFound();
@@ -114,7 +114,7 @@
                         return this.DeleteLobby(body);
                     }
 
-                    return Ok();
+                    return new ObjectResult(new { });
                 }
 
                 return NotFound();
@@ -134,7 +134,7 @@
                     {
                         if (this.lobbyManager.SetUserPayAmount(body.lobbyID, (int)body.userID, (float)body.userPayAmount))
                         {
-                            return Ok();
+                            return new ObjectResult(new { });
                         }
                         else
                         {
@@ -145,7 +145,7 @@
                     {
                         if (this.lobbyManager.SetUserVerified(body.lobbyID, (int)body.userID, (bool)body.verified))
                         {
-                            return Ok();
+                            return new ObjectResult(new { });
                         }
                         else
                         {
@@ -161,7 +161,7 @@
                 {
                     if (this.lobbyManager.SetReceiptUrl(body.lobbyID, body.receiptUrl))
                     {
-                        return Ok();
+                        return new ObjectResult(new { });
                     }
                     else
                     {
@@ -172,7 +172,7 @@
                 {
                     if (this.lobbyManager.SetTotalPayAmount(body.lobbyID, (float)body.totalPayAmount))
                     {
-                        return Ok();
+                        return new ObjectResult(new { });
                     }
                     else
                     {
@@ -183,7 +183,7 @@
                 {
                     if (this.lobbyManager.SetHostConfirmed(body.lobbyID, (bool)body.hostConfirmed))
                     {
-                        return Ok();
+                        return new ObjectResult(new { });
                     }
                     else
                     {
@@ -194,7 +194,7 @@
                 {
                     if (this.lobbyManager.SetMerchant(body.lobbyID, (int)body.merchantID))
                     {
-                        return Ok();
+                        return new ObjectResult(new { });
                     }
                     else
                     {
@@ -213,7 +213,7 @@
             {
                 if (this.lobbyManager.InitPayment(body.lobbyID))
                 {
-                    return Ok();
+                    return new ObjectResult(new { });
                 }
 
                 return NotFound();
@@ -229,7 +229,7 @@
             {
                 if (this.lobbyManager.DeleteLobby(body.lobbyID))
                 {
-                    return Ok();
+                    return new ObjectResult(new { });
                 }
 
                 return NotFound();
@@ -250,7 +250,7 @@
                 }
                 else if ((bool)result)
                 {
-                    return Ok();
+                    return new ObjectResult(new { });
                 }
 
                 return NoContent();
